@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/homeRefundlyLogo"
+        android:src="@drawable/refundlylogo"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:text="Refundly"
+        android:gravity="center"
+        android:layout_toEndOf="@+id/homeRefundlyLogo"
+        android:textSize="55dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current posts:"
+        android:id="@+id/currentposttext"
+        android:layout_below="@+id/homeRefundlyLogo"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/currentpostslist"
+        android:layout_below="@+id/currentposttext"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Old posts:"
+        android:id="@+id/textView6"
+        android:layout_below="@+id/currentpostslist"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/oldpostslist"
+        android:layout_below="@+id/textView6"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>

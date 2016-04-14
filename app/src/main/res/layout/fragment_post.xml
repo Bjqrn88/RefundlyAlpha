@@ -1,0 +1,98 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.macbear.refundlyalpha.PostFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/value"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Lille"
+        android:id="@+id/textView3"
+        android:layout_below="@+id/value"
+        android:layout_alignStart="@+id/value" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Mellem"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/value"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Stor"
+        android:id="@+id/textView5"
+        android:layout_below="@+id/value"
+        android:layout_alignEnd="@+id/value" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:hint="Vejnavn:"
+        android:ems="10"
+        android:id="@+id/addressRoad"
+        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/textView3" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:hint="Postnummer:"
+        android:ems="10"
+        android:id="@+id/addressPostalCode"
+        android:layout_below="@+id/addressRoad"
+        android:layout_alignStart="@+id/addressRoad" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:hint="By:"
+        android:ems="10"
+        android:id="@+id/addressTown"
+        android:layout_below="@+id/addressPostalCode"
+        android:layout_alignStart="@+id/addressPostalCode" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:hint="Skriv evt. en kommentar"
+        android:gravity="top"
+        android:ems="10"
+        android:id="@+id/comment"
+        android:layout_below="@+id/addressTown"
+        android:layout_above="@+id/imageView2" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/imageView2"
+        android:src="@drawable/refundlylogo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="Post Refund"
+        android:id="@+id/postButton"
+        android:layout_above="@+id/comment"
+        android:layout_toEndOf="@id/addressPostalCode" />
+</RelativeLayout>

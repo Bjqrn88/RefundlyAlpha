@@ -2,9 +2,6 @@ package com.macbear.refundlyalpha;
 
 import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -23,15 +20,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -77,7 +65,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -85,16 +72,22 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.nav_home:
                 fragmentManager.beginTransaction()
-                        .add(R.id.frameholder, new BlankFragment())
+                        .replace(R.id.frameholder, new HomeFragment())
                         .commit();
                 break;
             case R.id.nav_post:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new PostFragment())
+                        .commit();
                 break;
             case R.id.nav_map:
                 break;
             case R.id.nav_manage:
                 break;
             case R.id.nav_profile:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new ProfilFragment())
+                        .commit();
                 break;
             case R.id.nav_send:
                 break;

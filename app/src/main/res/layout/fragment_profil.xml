@@ -1,0 +1,85 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.macbear.refundlyalpha.ProfilFragment">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilPict"
+        android:src="@drawable/refundlylogo"
+        android:layout_alignBottom="@+id/profilUsernameText"
+        android:layout_centerHorizontal="true"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilUsernameText"
+        android:text="Username:"
+        android:layout_above="@+id/profilUsernameField"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="20dp"
+        />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilUsernameField"
+        android:hint="Enter a username"
+        android:layout_above="@+id/profilAddressText"
+        android:layout_alignStart="@+id/profilUsernameText"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/profilAddressText"
+        android:text="Hjemme addresse:"
+        android:layout_above="@+id/profilAddressRoad"
+        android:layout_alignStart="@+id/profilUsernameText"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/profilAddressRoad"
+        android:layout_above="@+id/profilAddressPostalcode"
+        android:layout_alignStart="@+id/profilUsernameText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/profilAddressPostalcode"
+        android:layout_above="@+id/profilAddressCity"
+        android:layout_alignStart="@+id/profilUsernameText" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPostalAddress"
+        android:ems="10"
+        android:id="@+id/profilAddressCity"
+        android:layout_above="@+id/profilCancelButton"
+        android:layout_alignStart="@+id/profilUsernameText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:id="@+id/profilCancelButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/profilUsernameText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/profilSaveButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>
