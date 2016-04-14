@@ -49,7 +49,7 @@ public class HomeFragment extends Fragment {
 
         currentArrayAdapter.clear();
         oldArrayAdapter.clear();
-        currentArrayAdapter.addAll(Arrays.asList("One", "Two", "Three", "Four", "Five", "Six", "Seven"));
+        currentArrayAdapter.addAll(Arrays.asList("One1", "Two2", "Three", "Four", "Five", "Six", "Seven"));
         oldArrayAdapter.addAll(Arrays.asList("OneOLD", "TwoOLD", "ThreeOLD", "FourOld", "FiveOld", "SixOld", "SevenOld"));
 
 
