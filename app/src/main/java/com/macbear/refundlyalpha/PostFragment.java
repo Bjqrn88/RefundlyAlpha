@@ -11,18 +11,31 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
-public class PostFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+
+public class PostFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, OnMapReadyCallback {
 
     Button post;
     EditText road, city, postalCode, commentField;
     SeekBar valueEstimate;
     int value;
+    GoogleMap map;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_post, container, false);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.mapPost);
+
+        mapFragment.getMapAsync(this);
+
 
         // Post refund button
         post = (Button) root.findViewById(R.id.postButton);
@@ -64,5 +77,14 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        LatLng kgsLyngby = new LatLng(55.771212, 12.502021);
+
+
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kgsLyngby, 12f));
     }
 }

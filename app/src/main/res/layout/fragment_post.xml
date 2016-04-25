@@ -78,15 +78,16 @@
         android:ems="10"
         android:id="@+id/comment"
         android:layout_below="@+id/addressTown"
-        android:layout_above="@+id/imageView2" />
+        android:layout_above="@+id/mapPost" />
 
-    <ImageView
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:id="@+id/imageView2"
-        android:src="@drawable/refundlylogo"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:id="@+id/mapPost"
+        android:name="com.google.android.gms.maps.SupportMapFragment">
+    </fragment>
 
     <Button
         android:layout_width="100dp"

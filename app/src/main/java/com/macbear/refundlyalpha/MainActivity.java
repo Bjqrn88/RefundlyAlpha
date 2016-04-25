@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity
                         .commit();
                 break;
             case R.id.nav_map:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new MapFragment())
+                        .commit();
                 break;
             case R.id.nav_manage:
                 break;
