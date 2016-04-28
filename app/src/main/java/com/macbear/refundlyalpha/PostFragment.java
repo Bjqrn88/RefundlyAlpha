@@ -1,6 +1,10 @@
 package com.macbear.refundlyalpha;
 
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,11 +20,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class PostFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, OnMapReadyCallback {
+public class PostFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, OnMapReadyCallback,
+        GoogleMap.OnMapClickListener{
 
     Button post;
-    EditText road, city, postalCode, commentField;
+    EditText road, postalCode, commentField;
     SeekBar valueEstimate;
     int value;
     GoogleMap map;
@@ -43,7 +49,6 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
         // Text fields
         road = (EditText) root.findViewById(R.id.addressRoad);
-        city = (EditText) root.findViewById(R.id.addressTown);
         postalCode = (EditText) root.findViewById(R.id.addressPostalCode);
         commentField = (EditText) root.findViewById(R.id.comment);
 
@@ -82,9 +87,24 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng kgsLyngby = new LatLng(55.771212, 12.502021);
+        map.setOnMapClickListener(this);
+        map.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager)
+                getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
 
+        Location location = locationManager.getLastKnownLocation(locationManager
+                .getBestProvider(criteria, false));
+        LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kgsLyngby, 12f));
+        map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));
+        float zoomLevel = 16;
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        map.clear();
+        map.addMarker(new MarkerOptions().position(latLng));
     }
 }

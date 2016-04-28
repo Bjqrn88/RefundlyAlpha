@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Lille"
+        android:text="Small"
         android:id="@+id/textView3"
         android:layout_below="@+id/value"
         android:layout_alignStart="@+id/value" />
@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Mellem"
+        android:text="Medium"
         android:id="@+id/textView4"
         android:layout_below="@+id/value"
         android:layout_centerHorizontal="true" />
@@ -34,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Stor"
+        android:text="Large"
         android:id="@+id/textView5"
         android:layout_below="@+id/value"
         android:layout_alignEnd="@+id/value" />
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
-        android:hint="Vejnavn:"
+        android:hint="Adress:"
         android:ems="10"
         android:id="@+id/addressRoad"
         android:layout_below="@+id/textView3"
@@ -53,31 +53,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
-        android:hint="Postnummer:"
+        android:hint="Postnumber:"
         android:ems="10"
         android:id="@+id/addressPostalCode"
         android:layout_below="@+id/addressRoad"
         android:layout_alignStart="@+id/addressRoad" />
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
-        android:hint="By:"
-        android:ems="10"
-        android:id="@+id/addressTown"
-        android:layout_below="@+id/addressPostalCode"
-        android:layout_alignStart="@+id/addressPostalCode" />
-
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
-        android:hint="Skriv evt. en kommentar"
+        android:hint="Add a comment..."
         android:gravity="top"
         android:ems="10"
         android:id="@+id/comment"
-        android:layout_below="@+id/addressTown"
         android:layout_above="@+id/mapPost" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
@@ -92,8 +81,9 @@
     <Button
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginRight="10dp"
         android:text="Post Refund"
         android:id="@+id/postButton"
-        android:layout_above="@+id/comment"
-        android:layout_toEndOf="@id/addressPostalCode" />
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentRight="true" />
 </RelativeLayout>
