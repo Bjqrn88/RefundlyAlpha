@@ -39,7 +39,8 @@
         android:ems="10"
         android:id="@+id/profilAddressCity"
         android:hint="Enter Phone number"
-        android:layout_above="@+id/profilCancelButton"
+        android:layout_marginBottom="24dp"
+        android:layout_above="@+id/checkBox"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -47,8 +48,9 @@
         android:layout_height="wrap_content"
         android:text="Cancel"
         android:id="@+id/profilCancelButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/profilAddressCity" />
+        android:layout_alignBaseline="@+id/profilSaveButton"
+        android:layout_alignBottom="@+id/profilSaveButton"
+        android:layout_alignEnd="@+id/profilAddressText" />
 
     <Button
         android:layout_width="wrap_content"
@@ -85,5 +87,14 @@
         android:layout_above="@+id/profilUsernameText"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="44dp" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Collector"
+        android:id="@+id/checkBox"
+        android:checked="false"
+        android:layout_above="@+id/profilCancelButton"
+        android:layout_toEndOf="@+id/profilUsernameText" />
 
 </RelativeLayout>

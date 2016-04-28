@@ -13,6 +13,9 @@ public class ProfilInformation extends RealmObject {
     private String adress;
     private String phone;
 
+
+    private Boolean collector;
+
     public String getProfileID() {
         return profileID;
     }
@@ -53,5 +56,7 @@ public class ProfilInformation extends RealmObject {
         this.phone = phone;
     }
 
-
+    public Boolean getCollector() {return collector;}
+    
+    public void setCollector(Boolean collector) {this.collector = collector;}
 }
