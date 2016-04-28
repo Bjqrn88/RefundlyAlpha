@@ -90,6 +90,10 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new PostFragment())
                         .commit();
                 break;
+            case R.id.nav_collect:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new CollectFragment())
+                        .commit();
             case R.id.nav_map:
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new MapFragment())
