@@ -1,6 +1,10 @@
 package com.macbear.refundlyalpha;
 
 
+import android.content.Context;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +17,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -35,9 +40,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng kgsLyngby = new LatLng(55.771212, 12.502021);
+        map.setMyLocationEnabled(true);
+        LocationManager locationManager = (LocationManager)
+                getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
 
+        Location location = locationManager.getLastKnownLocation(locationManager
+                .getBestProvider(criteria, false));
+        LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
 
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(kgsLyngby, 12f));
+        map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));
+        float zoomLevel = 16;
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
     }
 }
