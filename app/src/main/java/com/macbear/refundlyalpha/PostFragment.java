@@ -30,6 +30,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     SeekBar valueEstimate;
     int value;
     GoogleMap map;
+    MarkerOptions mMaker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,6 +42,8 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                 .findFragmentById(R.id.mapPost);
 
         mapFragment.getMapAsync(this);
+
+        mMaker = new MarkerOptions();
 
 
         // Post refund button
@@ -97,7 +100,10 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                 .getBestProvider(criteria, false));
         LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
 
-        map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));
+        mMaker.position(myCoords).title("My Refunds");
+        map.addMarker(mMaker);
+
+        //map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));
         float zoomLevel = 16;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
     }
@@ -105,6 +111,6 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     @Override
     public void onMapClick(LatLng latLng) {
         map.clear();
-        map.addMarker(new MarkerOptions().position(latLng));
+        map.addMarker(mMaker.position(latLng));
     }
 }
