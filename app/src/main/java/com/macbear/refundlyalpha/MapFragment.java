@@ -14,9 +14,11 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback,
+        GoogleMap.OnMapClickListener{
 
     private static final String TAG = MainActivity.class.getName();
 
@@ -39,12 +41,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
-        LatLng kgsLyngby = new LatLng(55.771212, 12.502021);
 
+        map.setOnMapClickListener(this);
+
+        LatLng kgsLyngby = new LatLng(55.771212, 12.502021);
 
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(kgsLyngby, 12f));
     }
-
 
     @Override
     public void onMapClick(LatLng latLng) {
