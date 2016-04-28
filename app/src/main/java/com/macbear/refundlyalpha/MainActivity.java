@@ -1,8 +1,8 @@
 package com.macbear.refundlyalpha;
 
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -25,7 +25,9 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        realmConfig = new RealmConfiguration.Builder(this).build();
+        realmConfig = new RealmConfiguration.Builder(this)
+                .deleteRealmIfMigrationNeeded()
+                .build();
         Realm.setDefaultConfiguration(realmConfig);
         realm = Realm.getInstance(realmConfig);
 
