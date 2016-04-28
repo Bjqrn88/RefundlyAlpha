@@ -11,8 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private Realm realm;
+    private RealmConfiguration realmConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +24,10 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        realmConfig = new RealmConfiguration.Builder(this).build();
+        Realm.setDefaultConfiguration(realmConfig);
+        realm = Realm.getInstance(realmConfig);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
