@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profilAddressText"
-        android:text="Hjemme addresse:"
+        android:text="Home adress:"
         android:layout_above="@+id/profilAddressRoad"
         android:layout_alignStart="@+id/profilAddressRoad" />
 
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/profilUserName"
+        android:id="@+id/profilUserNameField"
         android:layout_above="@+id/profilAddressText"
         android:layout_alignStart="@+id/profilAddressText"
         android:hint="Enter Username" />
@@ -73,13 +73,13 @@
         android:layout_height="wrap_content"
         android:text="Username"
         android:id="@+id/profilUsernameText"
-        android:layout_above="@+id/profilUserName"
-        android:layout_alignStart="@+id/profilUserName" />
+        android:layout_above="@+id/profilUserNameField"
+        android:layout_alignStart="@+id/profilUserNameField" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView3"
+        android:id="@+id/profilPict"
         android:src="@drawable/refundlylogo"
         android:scaleType="fitCenter"
         android:layout_above="@+id/profilUsernameText"

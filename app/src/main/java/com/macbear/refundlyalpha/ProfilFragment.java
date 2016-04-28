@@ -28,7 +28,7 @@ public class ProfilFragment extends Fragment implements View.OnClickListener {
         profilePicture = (ImageView) root.findViewById(R.id.profilPict);
         profilePicture.setOnClickListener(this);
         // Username
-        profilUsername = (EditText) root.findViewById(R.id.profilUsernameField);
+        profilUsername = (EditText) root.findViewById(R.id.profilUserNameField);
         // Address text fields for profile
         profilAddressRoad = (EditText) root.findViewById(R.id.profilAddressRoad);
         profilAddressPostalCode = (EditText) root.findViewById(R.id.profilAddressPostalcode);
