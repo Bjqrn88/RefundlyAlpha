@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
-        android:hint="Adress:"
+        android:hint="Address:"
         android:ems="10"
         android:id="@+id/addressRoad"
         android:layout_below="@+id/textView3"

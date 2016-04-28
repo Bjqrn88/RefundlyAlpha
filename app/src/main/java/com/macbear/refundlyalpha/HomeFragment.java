@@ -11,9 +11,14 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.macbear.refundlyalpha.Realm.PostInfomation;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 
 public class HomeFragment extends Fragment {
@@ -22,10 +27,14 @@ public class HomeFragment extends Fragment {
     ArrayAdapter<String> currentArrayAdapter;
     ArrayAdapter<String> oldArrayAdapter;
 
+    Realm realm;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        realm = Realm.getDefaultInstance();
 
         currentArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.list_layout);
         oldArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.list_layout);
@@ -49,10 +58,23 @@ public class HomeFragment extends Fragment {
 
         currentArrayAdapter.clear();
         oldArrayAdapter.clear();
-        currentArrayAdapter.addAll(Arrays.asList("One1", "Two2", "Three", "Four", "Five", "Six", "Seven"));
+        currentArrayAdapter.addAll(getCurrentPosts());
         oldArrayAdapter.addAll(Arrays.asList("OneOLD", "TwoOLD", "ThreeOLD", "FourOld", "FiveOld", "SixOld", "SevenOld"));
 
 
         return root;
+    }
+
+    public List<String> getCurrentPosts(){
+
+        RealmResults<PostInfomation> results = realm.where(PostInfomation.class).findAll();
+
+        List<String> list = new ArrayList<String>();
+
+        for (PostInfomation post:results) {
+            list.add(post.getTimestamp().toString());
+        }
+
+        return list;
     }
 }

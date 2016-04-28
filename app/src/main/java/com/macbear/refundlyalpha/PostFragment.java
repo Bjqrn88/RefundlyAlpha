@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +20,19 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.macbear.refundlyalpha.Realm.PostInfomation;
+
+import java.util.Date;
+
+import io.realm.Realm;
 
 public class PostFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, OnMapReadyCallback,
         GoogleMap.OnMapClickListener{
-
+    Realm realm;
     Button post;
-    EditText road, postalCode, commentField;
+    EditText address, postalCode, commentField;
     SeekBar valueEstimate;
-    int value;
+    int size;
     GoogleMap map;
     MarkerOptions mMaker;
 
@@ -37,6 +41,8 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_post, container, false);
+
+        realm = Realm.getDefaultInstance();
 
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.mapPost);
@@ -51,18 +57,18 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         post.setOnClickListener(this);
 
         // Text fields
-        road = (EditText) root.findViewById(R.id.addressRoad);
+        address = (EditText) root.findViewById(R.id.addressRoad);
         postalCode = (EditText) root.findViewById(R.id.addressPostalCode);
         commentField = (EditText) root.findViewById(R.id.comment);
 
-        // Set value of refund
+        // Set size of refund
         valueEstimate = (SeekBar) root.findViewById(R.id.value);
         valueEstimate.setOnSeekBarChangeListener(this);
-        // Setting the max value og seeker to 100
+        // Setting the max size og seeker to 100
         valueEstimate.setMax(100);
 
-        // initiate value to 0
-        value = 0;
+        // initiate size to 0
+        size = 0;
 
         return root;
     }
@@ -70,13 +76,29 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
     @Override
     public void onClick(View view) {
-        road.setText(""+value);
+        realm.executeTransactionAsync(new Realm.Transaction(){
+            @Override
+            public void execute(Realm realm) {
+                PostInfomation post = new PostInfomation();
+                post.setAdress(address.getText().toString());
+                post.setPostNumber(postalCode.getText().toString());
+                post.setLat(mMaker.getPosition().latitude);
+                post.setLnt(mMaker.getPosition().longitude);
+                post.setCollectorID("JohnDoe123");
+                post.setPosterID(1337+size);
+                post.setPostProfileID("KimPossible321");
+                post.setComment(commentField.getText().toString());
+                post.setSize(size);
+                post.setTimestamp(new Date());
+                PostInfomation realmPost = realm.copyToRealmOrUpdate(post);
+            }
+        });
+
     }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-        Log.d("Seekbar","Value: "+i);
-        value = i;
+        size = i;
     }
 
     @Override
@@ -100,10 +122,9 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                 .getBestProvider(criteria, false));
         LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
 
-        mMaker.position(myCoords).title("My Refunds");
+        mMaker.position(myCoords).title("Comment: "+commentField.getText());
         map.addMarker(mMaker);
 
-        //map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));
         float zoomLevel = 16;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
     }

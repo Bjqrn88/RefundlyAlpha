@@ -1,12 +1,17 @@
 package com.macbear.refundlyalpha.Realm;
 
+import java.util.Date;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by MacBear on 28/04/16.
  */
 public class PostInfomation extends RealmObject {
-    private String posterID;
+    @PrimaryKey
+    private int posterID;
+
     private String postProfileID;
     private String collectorID;
     private double lat;
@@ -15,12 +20,21 @@ public class PostInfomation extends RealmObject {
     private String comment;
     private String adress;
     private String postNumber;
+    private Date timestamp;
 
-    public String getPosterID() {
+    public Date getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public int getPosterID() {
         return posterID;
     }
 
-    public void setPosterID(String posterID) {
+    public void setPosterID(int posterID) {
         this.posterID = posterID;
     }
 
