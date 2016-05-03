@@ -122,7 +122,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                 .getBestProvider(criteria, false));
         LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
 
-        mMaker.position(myCoords).title("Comment: "+commentField.getText());
+        mMaker.position(myCoords).title("Comment: "+commentField.getText().toString());
         map.addMarker(mMaker);
 
         float zoomLevel = 16;
@@ -132,6 +132,6 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     @Override
     public void onMapClick(LatLng latLng) {
         map.clear();
-        map.addMarker(mMaker.position(latLng));
+        map.addMarker(mMaker.position(latLng).title("Comment: "+commentField.getText().toString()));
     }
 }

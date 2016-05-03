@@ -69,6 +69,8 @@ public class HomeFragment extends Fragment {
 
         RealmResults<PostInfomation> results = realm.where(PostInfomation.class).findAll();
 
+        Log.d("Result size from Realm",""+results.size());
+
         List<String> list = new ArrayList<String>();
 
         for (PostInfomation post:results) {
