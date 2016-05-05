@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 
+import com.baasbox.android.BaasDocument;
+import com.baasbox.android.BaasHandler;
+import com.baasbox.android.BaasResult;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,6 +39,8 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     int size;
     GoogleMap map;
     MarkerOptions mMaker;
+
+    MapFragment mapFragment = new MapFragment();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,23 +82,54 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
     @Override
     public void onClick(View view) {
+        final Date timeStamp = new Date();
         realm.executeTransactionAsync(new Realm.Transaction(){
             @Override
             public void execute(Realm realm) {
+
                 PostInfomation post = new PostInfomation();
-                post.setAdress(address.getText().toString());
+                post.setAddress(address.getText().toString());
                 post.setPostNumber(postalCode.getText().toString());
                 post.setLat(mMaker.getPosition().latitude);
                 post.setLnt(mMaker.getPosition().longitude);
-                post.setCollectorID("JohnDoe123");
+                post.setCollectorID("");
                 post.setPosterID(1337+size);
                 post.setPostProfileID("KimPossible321");
                 post.setComment(commentField.getText().toString());
                 post.setSize(size);
-                post.setTimestamp(new Date());
+                post.setTimestamp(timeStamp);
                 PostInfomation realmPost = realm.copyToRealmOrUpdate(post);
             }
         });
+
+
+        BaasDocument doc = new BaasDocument("PostInformation");
+        doc.put("posterProfileID","KimPossible123")
+                .put("posterID",1337+size)
+                .put("address",address.getText().toString())
+                .put("postalCode",postalCode.getText().toString())
+                .put("lat", mMaker.getPosition().latitude)
+                .put("lnt", mMaker.getPosition().longitude)
+                .put("collectorID","")
+                .put("comment",commentField.getText().toString())
+                .put("size", size)
+                .put("timeStamp", timeStamp.toString());
+        doc.save(new BaasHandler<BaasDocument>() {
+            @Override
+            public void handle(BaasResult<BaasDocument> res) {
+                if(res.isSuccess()) {
+                    Log.d("LOG","Saved: "+res.value());
+                } else {
+                    Log.d("LOG","Error: "+res.value());
+                }
+            }
+        });
+
+        mapFragment.setCoords(new LatLng(mMaker.getPosition().latitude, mMaker.getPosition().longitude));
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.frameholder, new MapFragment())
+                .commit();
 
     }
 

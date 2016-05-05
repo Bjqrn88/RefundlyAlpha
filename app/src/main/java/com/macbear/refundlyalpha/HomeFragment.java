@@ -11,10 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.macbear.refundlyalpha.Realm.PostInfomation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.realm.Realm;
@@ -23,10 +23,10 @@ import io.realm.RealmResults;
 
 public class HomeFragment extends Fragment {
 
-    ListView currentPosts, oldPosts;
+    ListView currentPosts;
     ArrayAdapter<String> currentArrayAdapter;
-    ArrayAdapter<String> oldArrayAdapter;
-
+    MapFragment mapFragment = new MapFragment();
+    RealmResults<PostInfomation> results;
     Realm realm;
 
     @Override
@@ -37,37 +37,30 @@ public class HomeFragment extends Fragment {
         realm = Realm.getDefaultInstance();
 
         currentArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.list_layout);
-        oldArrayAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), R.layout.list_layout);
 
         currentPosts = (ListView) root.findViewById(R.id.currentpostslist);
-        oldPosts = (ListView) root.findViewById(R.id.oldpostslist);
+
+        currentPosts.setAdapter(currentArrayAdapter);
+
+        currentArrayAdapter.clear();
+        currentArrayAdapter.addAll(getCurrentPosts());
+
         currentPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("CurrentList", "Jeg blev trykket");
+                mapFragment.setCoords(new LatLng(results.get(i).getLat(), results.get(i).getLnt()));
+
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.frameholder, new MapFragment())
+                        .commit();
             }
         });
-        oldPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("OldList", "Jeg blev trykket");
-            }
-        });
-        currentPosts.setAdapter(currentArrayAdapter);
-        oldPosts.setAdapter(oldArrayAdapter);
-
-        currentArrayAdapter.clear();
-        oldArrayAdapter.clear();
-        currentArrayAdapter.addAll(getCurrentPosts());
-        oldArrayAdapter.addAll(Arrays.asList("OneOLD", "TwoOLD", "ThreeOLD", "FourOld", "FiveOld", "SixOld", "SevenOld"));
-
-
         return root;
     }
 
     public List<String> getCurrentPosts(){
 
-        RealmResults<PostInfomation> results = realm.where(PostInfomation.class).findAll();
+        results = realm.where(PostInfomation.class).equalTo("collectorID", "").findAll();
 
         Log.d("Result size from Realm",""+results.size());
 

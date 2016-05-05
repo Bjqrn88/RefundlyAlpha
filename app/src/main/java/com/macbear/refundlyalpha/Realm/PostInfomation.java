@@ -90,7 +90,7 @@ public class PostInfomation extends RealmObject {
         return adress;
     }
 
-    public void setAdress(String adress) {
+    public void setAddress(String adress) {
         this.adress = adress;
     }
 

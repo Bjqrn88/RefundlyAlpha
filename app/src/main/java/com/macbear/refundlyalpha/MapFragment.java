@@ -26,6 +26,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     GoogleMap map;
     Realm realm;
+    LatLng myCoords;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,14 +51,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         addMakers();
 
-        LocationManager locationManager = (LocationManager)
-                getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
+        if (myCoords == null) {
+            LocationManager locationManager = (LocationManager)
+                    getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Criteria criteria = new Criteria();
 
-        Location location = locationManager.getLastKnownLocation(locationManager
-                .getBestProvider(criteria, false));
-        LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
-
+            Location location = locationManager.getLastKnownLocation(locationManager
+                    .getBestProvider(criteria, false));
+            myCoords = new LatLng(location.getLatitude(), location.getLongitude());
+        }
         //map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));
         float zoomLevel = 14;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
@@ -70,5 +72,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         for (PostInfomation post:results) {
             map.addMarker(new MarkerOptions().position(new LatLng(post.getLat(), post.getLnt())).title(post.getComment()));
         }
+    }
+
+
+    public void setCoords(LatLng coords){
+        myCoords = coords;
     }
 }

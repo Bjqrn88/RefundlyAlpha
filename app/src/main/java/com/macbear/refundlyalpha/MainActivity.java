@@ -8,16 +8,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.baasbox.android.BaasBox;
+import com.baasbox.android.BaasHandler;
+import com.baasbox.android.BaasResult;
+import com.baasbox.android.BaasUser;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private Realm realm;
     private RealmConfiguration realmConfig;
-
+    private BaasBox client;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +33,31 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        BaasBox.Builder b =
+                new BaasBox.Builder(this);
+        client = b.setApiDomain("ec2-54-93-73-245.eu-central-1.compute.amazonaws.com")
+                .setPort(9000)
+                .setAppCode("1234567890")
+                .init();
+
         realmConfig = new RealmConfiguration.Builder(this)
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(realmConfig);
         realm = Realm.getInstance(realmConfig);
+
+        BaasUser user = BaasUser.withUserName("android")
+                .setPassword("bjqrn");
+        user.login(new BaasHandler<BaasUser>() {
+            @Override
+            public void handle(BaasResult<BaasUser> result) {
+                if(result.isSuccess()) {
+                    Log.d("LOG", "The user is currently logged in: "+result.value());
+                } else {
+                    Log.e("LOG","Show error",result.error());
+                }
+            }
+        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
