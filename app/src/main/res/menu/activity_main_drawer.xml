@@ -19,6 +19,10 @@
             android:icon="@drawable/ic_map_black_18dp"
             android:title="Map" />
         <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/ic_map_black_18dp"
+            android:title="Login" />
+        <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
             android:title="Manage" />

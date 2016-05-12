@@ -173,6 +173,10 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new ProfilFragment())
                         .commit();
                 break;
+            case R.id.nav_login:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new LoginFragment())
+                        .commit();
             case R.id.nav_send:
                 break;
         }
