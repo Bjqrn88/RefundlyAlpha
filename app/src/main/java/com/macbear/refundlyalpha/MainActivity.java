@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
                 SharedPreferences sharedPreferences =
                         PreferenceManager.getDefaultSharedPreferences(context);
                 boolean sentToken = sharedPreferences
-                        .getBoolean(GCMQuickstartPreferences.SENT_TOKEN_TO_SERVER, false);
+                        .getBoolean(GCMQuickStartPreferences.SENT_TOKEN_TO_SERVER, false);
                 if (sentToken) {
                     Log.d("BroadcastReceiver", "Ready");
                 } else {
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity
 
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, GCMRegistrationIntentService.class);
+            Intent intent = new Intent(this, GCMRegistrationIntentservice.class);
             startService(intent);
         }
 
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "registerReceiver: Running");
         if(!isReceiverRegistered) {
             LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(GCMQuickstartPreferences.REGISTRATION_COMPLETE));
+                    new IntentFilter(GCMQuickStartPreferences.REGISTRATION_COMPLETE));
             isReceiverRegistered = true;
             Log.d(TAG, "registerReceiver: is True");
         }
