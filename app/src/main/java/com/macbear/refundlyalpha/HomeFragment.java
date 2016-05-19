@@ -23,6 +23,8 @@ import io.realm.RealmResults;
 
 public class HomeFragment extends Fragment {
 
+    private static final String TAG = "HomeFragment";
+
     ListView currentPosts;
     ArrayAdapter<String> currentArrayAdapter;
     MapFragment mapFragment = new MapFragment();
@@ -60,14 +62,15 @@ public class HomeFragment extends Fragment {
 
     public List<String> getCurrentPosts(){
 
-        results = realm.where(PostInfomation.class).equalTo("collectorID", "").findAll();
+        results = realm.where(PostInfomation.class).findAll();
 
         Log.d("Result size from Realm",""+results.size());
 
         List<String> list = new ArrayList<String>();
 
+
         for (PostInfomation post:results) {
-            list.add(post.getTimestamp().toString());
+            Log.d(TAG, "getCurrentPosts: "+post);
         }
 
         return list;

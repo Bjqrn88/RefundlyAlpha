@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private BaasBox client;
     private BroadcastReceiver mRegistrationBroadcastReceiver;
     private boolean isReceiverRegistered;
+    private SyncRealm sync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,6 +108,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //new GetLocation(this).getCurrentLocation();
+
+
+        sync = new SyncRealm();
         onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
 
@@ -178,6 +183,7 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new LoginFragment())
                         .commit();
             case R.id.nav_send:
+                sync.sync();
                 break;
         }
 

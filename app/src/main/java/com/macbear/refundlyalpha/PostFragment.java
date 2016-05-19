@@ -93,7 +93,6 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                 post.setLat(mMaker.getPosition().latitude);
                 post.setLnt(mMaker.getPosition().longitude);
                 post.setCollectorID("");
-                post.setPosterID(1337+size);
                 post.setPostProfileID("KimPossible321");
                 post.setComment(commentField.getText().toString());
                 post.setSize(size);
@@ -102,10 +101,8 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
             }
         });
 
-
         BaasDocument doc = new BaasDocument("PostInformation");
         doc.put("posterProfileID","KimPossible123")
-                .put("posterID",1337+size)
                 .put("address",address.getText().toString())
                 .put("postalCode",postalCode.getText().toString())
                 .put("lat", mMaker.getPosition().latitude)
@@ -157,7 +154,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
         Location location = locationManager.getLastKnownLocation(locationManager
                 .getBestProvider(criteria, false));
-        LatLng myCoords = new LatLng(61.143235,9.09668);
+        LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
 
         mMaker.position(myCoords).title("Comment: "+commentField.getText().toString());
         map.addMarker(mMaker);

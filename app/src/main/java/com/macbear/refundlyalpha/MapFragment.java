@@ -56,8 +56,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     getActivity().getSystemService(Context.LOCATION_SERVICE);
             Criteria criteria = new Criteria();
 
-            Location location = locationManager.getLastKnownLocation(locationManager
-                    .getBestProvider(criteria, false));
+            Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
             myCoords = new LatLng(location.getLatitude(), location.getLongitude());
         }
         //map.addMarker(new MarkerOptions().position(myCoords).title(("My location")));

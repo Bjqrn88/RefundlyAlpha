@@ -9,10 +9,10 @@ import io.realm.annotations.PrimaryKey;
  * Created by MacBear on 28/04/16.
  */
 public class PostInfomation extends RealmObject {
-    @PrimaryKey
-    private int posterID;
 
+    @PrimaryKey
     private String postProfileID;
+
     private String collectorID;
     private double lat;
     private double lnt;
@@ -28,14 +28,6 @@ public class PostInfomation extends RealmObject {
 
     public void setTimestamp(Date timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public int getPosterID() {
-        return posterID;
-    }
-
-    public void setPosterID(int posterID) {
-        this.posterID = posterID;
     }
 
     public String getPostProfileID() {
