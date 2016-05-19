@@ -42,7 +42,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
+        android:inputType="textCapSentences"
         android:hint="Address:"
         android:ems="10"
         android:id="@+id/addressRoad"
@@ -52,7 +52,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPostalAddress"
+        android:inputType="number"
         android:hint="Postnumber:"
         android:ems="10"
         android:id="@+id/addressPostalCode"
@@ -62,7 +62,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
+        android:inputType="textMultiLine|textCapSentences"
         android:hint="Add a comment..."
         android:gravity="top"
         android:ems="10"

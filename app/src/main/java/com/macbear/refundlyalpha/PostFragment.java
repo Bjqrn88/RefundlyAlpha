@@ -3,6 +3,7 @@ package com.macbear.refundlyalpha;
 
 import android.content.Context;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.macbear.refundlyalpha.Realm.PostInfomation;
 
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.Realm;
 
@@ -39,6 +41,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     int size;
     GoogleMap map;
     MarkerOptions mMaker;
+    Geocoder mGeocoder;
 
     MapFragment mapFragment = new MapFragment();
 
@@ -56,6 +59,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         mapFragment.getMapAsync(this);
 
         mMaker = new MarkerOptions();
+        mGeocoder = new Geocoder(this.getContext(), Locale.getDefault());
 
 
         // Post refund button
@@ -83,11 +87,22 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     @Override
     public void onClick(View view) {
         final Date timeStamp = new Date();
+        final int nextId;
+        int nextId1;
+        try {
+            nextId1 = (realm.where(PostInfomation.class).max("postId").intValue() + 1);
+        }catch (NullPointerException e){
+            Log.d("PostFragment", "onClick: Error when setting nextid: "+e.getLocalizedMessage());
+            nextId1 = 0;
+        }
+        nextId = nextId1;
+        Log.d("PostFragment", "onClick: nextid = "+nextId);
         realm.executeTransactionAsync(new Realm.Transaction(){
             @Override
             public void execute(Realm realm) {
 
                 PostInfomation post = new PostInfomation();
+                post.setPostId(nextId);
                 post.setAddress(address.getText().toString());
                 post.setPostNumber(postalCode.getText().toString());
                 post.setLat(mMaker.getPosition().latitude);
@@ -97,12 +112,13 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                 post.setComment(commentField.getText().toString());
                 post.setSize(size);
                 post.setTimestamp(timeStamp);
-                PostInfomation realmPost = realm.copyToRealmOrUpdate(post);
+                realm.copyToRealmOrUpdate(post);
             }
         });
 
         BaasDocument doc = new BaasDocument("PostInformation");
         doc.put("posterProfileID","KimPossible123")
+                .put("postId", nextId)
                 .put("address",address.getText().toString())
                 .put("postalCode",postalCode.getText().toString())
                 .put("lat", mMaker.getPosition().latitude)
@@ -168,4 +184,5 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         map.clear();
         map.addMarker(mMaker.position(latLng).title("Comment: "+commentField.getText().toString()));
     }
+
 }

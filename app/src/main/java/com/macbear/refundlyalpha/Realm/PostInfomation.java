@@ -11,17 +11,25 @@ import io.realm.annotations.PrimaryKey;
 public class PostInfomation extends RealmObject {
 
     @PrimaryKey
-    private String postProfileID;
+    private int postId;
 
+    private Date timestamp;
+    private String postProfileID;
     private String collectorID;
     private double lat;
     private double lnt;
     private int size;
     private String comment;
-    private String adress;
+    private String address;
     private String postNumber;
-    private Date timestamp;
 
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
     public Date getTimestamp() {
         return timestamp;
     }
@@ -78,12 +86,12 @@ public class PostInfomation extends RealmObject {
         this.comment = comment;
     }
 
-    public String getAdress() {
-        return adress;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAddress(String adress) {
-        this.adress = adress;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPostNumber() {

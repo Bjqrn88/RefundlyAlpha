@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
 
     public List<String> getCurrentPosts(){
 
-        results = realm.where(PostInfomation.class).findAll();
+        results = realm.where(PostInfomation.class).equalTo("collectorID","").findAll();
 
         Log.d("Result size from Realm",""+results.size());
 
@@ -71,6 +71,7 @@ public class HomeFragment extends Fragment {
 
         for (PostInfomation post:results) {
             Log.d(TAG, "getCurrentPosts: "+post);
+            list.add(post.getTimestamp().toString());
         }
 
         return list;

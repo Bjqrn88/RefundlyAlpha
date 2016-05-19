@@ -22,7 +22,7 @@ import com.macbear.refundlyalpha.Realm.PostInfomation;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class MapFragment extends Fragment implements OnMapReadyCallback {
+public class MapFragment extends Fragment implements OnMapReadyCallback{
 
     GoogleMap map;
     Realm realm;
@@ -63,7 +63,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         float zoomLevel = 14;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
     }
-
 
     public void addMakers(){
         RealmResults<PostInfomation> results = realm.where(PostInfomation.class).findAll();

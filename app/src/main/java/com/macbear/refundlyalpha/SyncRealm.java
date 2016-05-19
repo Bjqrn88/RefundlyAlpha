@@ -54,32 +54,33 @@ public class SyncRealm {
     }
 
     private void syncWithRealm(){
-            Date convertDate = new Date();
-            SimpleDateFormat simple = new SimpleDateFormat("E MMM d HH:mm:ss zzzz yyyy");
+        Date convertDate = new Date();
+        SimpleDateFormat simple = new SimpleDateFormat("E MMM d HH:mm:ss zzzz yyyy");
 
-                for (JsonObject json: result) {
-                    realm.beginTransaction();
-                    PostInfomation post = new PostInfomation();
-                    post.setPostProfileID(json.getString("posterProfileID"));
-                    post.setCollectorID(json.getString("collectorID"));
-                    post.setAddress(json.getString("address"));
-                    post.setPostNumber(json.getString("postalCode"));
-                    post.setLat(json.getDouble("lat"));
-                    post.setLnt(json.getDouble("lnt"));
-                    post.setSize(json.getInt("size"));
-                    post.setComment("comment");
-                    try {
-                        convertDate = simple.parse(json.getString("timeStamp"));
-                    } catch (ParseException e) {
-                        Log.d(TAG, "syncWithRealm: " + e.getLocalizedMessage());
-                    }
-                    Log.d(TAG, "execute: "+convertDate);
-                    post.setTimestamp(convertDate);
-                    PostInfomation realmPost = realm.copyToRealmOrUpdate(post);
-                    realm.commitTransaction();
+        for (JsonObject json: result) {
+            realm.beginTransaction();
+            PostInfomation post = new PostInfomation();
+            Log.d(TAG, "syncWithRealm: id = "+ json.getInt("postId"));
+            post.setPostId(json.getInt("postId"));
+            post.setPostProfileID(json.getString("posterProfileID"));
+            post.setCollectorID(json.getString("collectorID"));
+            post.setAddress(json.getString("address"));
+            post.setPostNumber(json.getString("postalCode"));
+            post.setLat(json.getDouble("lat"));
+            post.setLnt(json.getDouble("lnt"));
+            post.setSize(json.getInt("size"));
+            post.setComment("comment");
+            try {
+                convertDate = simple.parse(json.getString("timeStamp"));
+            } catch (ParseException e) {
+                Log.d(TAG, "syncWithRealm: " + e.getLocalizedMessage());
+            }
+            Log.d(TAG, "execute: "+convertDate);
+            post.setTimestamp(convertDate);
+            realm.copyToRealmOrUpdate(post);
+            realm.commitTransaction();
 
-                }
-
+        }
 
         results = realm.where(PostInfomation.class).findAll();
 
