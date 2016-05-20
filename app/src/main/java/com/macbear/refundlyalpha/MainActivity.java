@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity
     private Realm realm;
     private RealmConfiguration realmConfig;
     private BaasBox client;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private boolean isReceiverRegistered;
     private SyncRealm sync;
 
     @Override
@@ -58,17 +56,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        CallbackManager callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            public void onSuccess(LoginResult loginResult) {
-            }
-
-            public void onError(FacebookException exception) {
-            }
-            public void onCancel(){
-            }
-        });
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -143,11 +130,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //new GetLocation(this).getCurrentLocation();
-
-
         sync = new SyncRealm();
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        sync.sync();
+
+        onNavigationItemSelected(navigationView.getMenu().getItem(1));
         AccessToken at = AccessToken.getCurrentAccessToken();
         if(at!=null) {
             onNavigationItemSelected(navigationView.getMenu().getItem(0));
@@ -215,8 +201,8 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new MapFragment())
                         .commit();
                 break;
-            case R.id.nav_manage:
-                break;
+            /*case R.id.nav_manage:
+                break;*/
             case R.id.nav_profile:
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new ProfilFragment())
@@ -227,44 +213,11 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new LoginFragment())
                         .commit();
             case R.id.nav_send:
-                sync.sync();
                 break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver();
-    }
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        isReceiverRegistered = false;
-        super.onPause();
-    }
-
-    private void registerReceiver(){
-        Log.d(TAG, "registerReceiver: Running");
-        if(!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(GCMQuickStartPreferences.REGISTRATION_COMPLETE));
-            isReceiverRegistered = true;
-            Log.d(TAG, "registerReceiver: is True");
-        }
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            return false;
-        }
         return true;
     }
 }
