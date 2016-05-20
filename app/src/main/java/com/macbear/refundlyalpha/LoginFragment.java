@@ -111,8 +111,6 @@ public class LoginFragment extends Fragment {
                 textView.setText("Weird, we had an error on login "+ exception.toString());
             }
         });
-        if(Profile.getCurrentProfile()!=null)
-        textView.setText(Profile.getCurrentProfile().getId());
         return rod;
     }
     public  void onActivityResult(int requestcode, int resoultcode,Intent data ){
