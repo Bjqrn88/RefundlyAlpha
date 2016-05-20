@@ -27,7 +27,7 @@ public class HomeFragment extends Fragment {
 
     ListView currentPosts;
     ArrayAdapter<String> currentArrayAdapter;
-    MapFragment mapFragment = new MapFragment();
+    MapFragment mapFragment;
     RealmResults<PostInfomation> results;
     Realm realm;
     private SyncRealm sync;
@@ -51,10 +51,11 @@ public class HomeFragment extends Fragment {
         currentPosts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                mapFragment = new MapFragment();
                 mapFragment.setCoords(new LatLng(results.get(i).getLat(), results.get(i).getLnt()));
 
                 getFragmentManager().beginTransaction()
-                        .replace(R.id.frameholder, new MapFragment())
+                        .replace(R.id.frameholder, mapFragment)
                         .commit();
             }
         });
