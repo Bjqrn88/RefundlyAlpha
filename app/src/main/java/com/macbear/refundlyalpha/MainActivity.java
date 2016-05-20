@@ -1,15 +1,8 @@
 package com.macbear.refundlyalpha;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,8 +16,6 @@ import com.baasbox.android.BaasBox;
 import com.baasbox.android.BaasHandler;
 import com.baasbox.android.BaasResult;
 import com.baasbox.android.BaasUser;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -38,8 +29,6 @@ public class MainActivity extends AppCompatActivity
     private Realm realm;
     private RealmConfiguration realmConfig;
     private BaasBox client;
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
-    private boolean isReceiverRegistered;
     private SyncRealm sync;
 
     @Override
@@ -49,34 +38,10 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(GCMQuickStartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    Log.d("BroadcastReceiver", "Ready");
-                } else {
-                    Log.d("BroadcastReceiver", "Failed");
-                }
-            }
-        };
-
-        registerReceiver();
-
-        if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, GCMRegistrationIntentservice.class);
-            startService(intent);
-        }
-
         BaasBox.Builder b =
                 new BaasBox.Builder(this);
         client = b.setApiDomain("ec2-54-93-73-245.eu-central-1.compute.amazonaws.com")
                 .setPort(9000)
-                .setPushSenderId("TestApp1337")
                 .setAppCode("1234567890")
                 .init();
 
@@ -108,11 +73,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //new GetLocation(this).getCurrentLocation();
-
-
         sync = new SyncRealm();
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        sync.sync();
+
+        onNavigationItemSelected(navigationView.getMenu().getItem(1));
     }
 
     @Override
@@ -171,8 +135,8 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new MapFragment())
                         .commit();
                 break;
-            case R.id.nav_manage:
-                break;
+            /*case R.id.nav_manage:
+                break;*/
             case R.id.nav_profile:
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new ProfilFragment())
@@ -183,44 +147,11 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new LoginFragment())
                         .commit();
             case R.id.nav_send:
-                sync.sync();
                 break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver();
-    }
-
-    @Override
-    protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-        isReceiverRegistered = false;
-        super.onPause();
-    }
-
-    private void registerReceiver(){
-        Log.d(TAG, "registerReceiver: Running");
-        if(!isReceiverRegistered) {
-            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                    new IntentFilter(GCMQuickStartPreferences.REGISTRATION_COMPLETE));
-            isReceiverRegistered = true;
-            Log.d(TAG, "registerReceiver: is True");
-        }
-    }
-
-    private boolean checkPlayServices() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            return false;
-        }
         return true;
     }
 }

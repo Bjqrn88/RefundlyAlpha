@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.google.android.gms.maps.model.LatLng;
 import com.macbear.refundlyalpha.Realm.PostInfomation;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class HomeFragment extends Fragment {
     MapFragment mapFragment = new MapFragment();
     RealmResults<PostInfomation> results;
     Realm realm;
+    private SyncRealm sync;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -57,11 +59,15 @@ public class HomeFragment extends Fragment {
                         .commit();
             }
         });
+
+        sync = new SyncRealm();
+        sync.sync();
         return root;
     }
 
     public List<String> getCurrentPosts(){
 
+        SimpleDateFormat simple = new SimpleDateFormat("E MMM d HH:mm:ss");
         results = realm.where(PostInfomation.class).equalTo("collectorID","").findAll();
 
         Log.d("Result size from Realm",""+results.size());
@@ -69,9 +75,12 @@ public class HomeFragment extends Fragment {
         List<String> list = new ArrayList<String>();
 
 
+
+
         for (PostInfomation post:results) {
+            String date = simple.format(post.getTimestamp());
             Log.d(TAG, "getCurrentPosts: "+post);
-            list.add(post.getTimestamp().toString());
+            list.add("Size: "+post.getSize()+", "+date);
         }
 
         return list;

@@ -27,6 +27,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     GoogleMap map;
     Realm realm;
     LatLng myCoords;
+    private SyncRealm sync;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,6 +41,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
                 .findFragmentById(R.id.map);
 
         mapFragment.getMapAsync(this);
+
+        sync = new SyncRealm();
+        sync.sync();
 
         return root;
     }
