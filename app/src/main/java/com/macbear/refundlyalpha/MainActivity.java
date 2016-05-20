@@ -20,6 +20,7 @@ import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -91,6 +92,10 @@ public class MainActivity extends AppCompatActivity
                 if (currentAccessToken == null){
                     Profile.setCurrentProfile(null);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frameholder, new LoginFragment())
+                            .commit();
                 }
                 else{
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -101,7 +106,10 @@ public class MainActivity extends AppCompatActivity
             onNavigationItemSelected(navigationView.getMenu().getItem(1));
         }
         else{
-            onNavigationItemSelected(navigationView.getMenu().getItem(4));
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.frameholder, new LoginFragment())
+                    .commit();
             drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
@@ -175,11 +183,12 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new ProfilFragment())
                         .commit();
                 break;
-            case R.id.nav_login:
+            /*case R.id.nav_login:
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new LoginFragment())
-                        .commit();
+                        .commit();*/
             case R.id.nav_send:
+                LoginManager.getInstance().logOut();
                 break;
         }
 

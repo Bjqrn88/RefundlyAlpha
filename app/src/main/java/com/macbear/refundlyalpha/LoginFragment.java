@@ -61,11 +61,9 @@ public class LoginFragment extends Fragment {
                 // App code
                 if (Profile.getCurrentProfile() == null) {
                     mProfileTracker = new ProfileTracker() {
-
                         @Override
                         protected void onCurrentProfileChanged(Profile profile3, Profile profile2) {
                             // profile2 is the new profile
-
                             profile = profile2;
                             profile.setCurrentProfile((profile2));
                             textView.setText("Hej " + profile.getFirstName());
@@ -96,9 +94,7 @@ public class LoginFragment extends Fragment {
                     fragmentManager.beginTransaction()
                             .replace(R.id.frameholder, new PostFragment())
                             .commit();
-
                 }
-
             }
 
             @Override
@@ -140,6 +136,5 @@ public class LoginFragment extends Fragment {
                 return null;
             }
         }.execute();
-
     }
 }
