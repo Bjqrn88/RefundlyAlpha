@@ -1,15 +1,8 @@
 package com.macbear.refundlyalpha;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,22 +16,14 @@ import com.baasbox.android.BaasBox;
 import com.baasbox.android.BaasHandler;
 import com.baasbox.android.BaasResult;
 import com.baasbox.android.BaasUser;
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -53,38 +38,15 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                SharedPreferences sharedPreferences =
-                        PreferenceManager.getDefaultSharedPreferences(context);
-                boolean sentToken = sharedPreferences
-                        .getBoolean(GCMQuickStartPreferences.SENT_TOKEN_TO_SERVER, false);
-                if (sentToken) {
-                    Log.d("BroadcastReceiver", "Ready");
-                } else {
-                    Log.d("BroadcastReceiver", "Failed");
-                }
-            }
-        };
-
-        registerReceiver();
-
-        if (checkPlayServices()) {
-            // Start IntentService to register this application with GCM.
-            Intent intent = new Intent(this, GCMRegistrationIntentservice.class);
-            startService(intent);
-        }
 
         BaasBox.Builder b =
                 new BaasBox.Builder(this);
         client = b.setApiDomain("ec2-54-93-73-245.eu-central-1.compute.amazonaws.com")
                 .setPort(9000)
-                .setPushSenderId("TestApp1337")
                 .setAppCode("1234567890")
                 .init();
 
@@ -112,6 +74,15 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
+        sync = new SyncRealm();
+        sync.sync();
+
+
+
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(
@@ -119,29 +90,20 @@ public class MainActivity extends AppCompatActivity
                     AccessToken currentAccessToken) {
 
                 if (currentAccessToken == null){
+                    Profile.setCurrentProfile(null);
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
                 }
                 else{
-
                     drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 }
             }
         };
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        sync = new SyncRealm();
-        sync.sync();
-
-        onNavigationItemSelected(navigationView.getMenu().getItem(1));
-        AccessToken at = AccessToken.getCurrentAccessToken();
-        if(at!=null) {
-            onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        if(AccessToken.getCurrentAccessToken()!=null){
+            onNavigationItemSelected(navigationView.getMenu().getItem(1));
         }
         else{
-            Profile.setCurrentProfile(null);
-            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             onNavigationItemSelected(navigationView.getMenu().getItem(4));
+            drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         }
     }
 
