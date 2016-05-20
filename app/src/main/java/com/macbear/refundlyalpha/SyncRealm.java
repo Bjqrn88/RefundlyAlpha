@@ -47,7 +47,7 @@ public class SyncRealm {
                         e.printStackTrace();
                     }
                 }else{
-                    Log.d(TAG, "handle: "+res.error());
+                    Log.e(TAG, "handle: "+res.error());
                 }
             }
         });
@@ -56,11 +56,13 @@ public class SyncRealm {
     private void syncWithRealm(){
         Date convertDate = new Date();
         SimpleDateFormat simple = new SimpleDateFormat("E MMM d HH:mm:ss zzzz yyyy");
+        realm.beginTransaction();
+        realm.delete(PostInfomation.class);
+        realm.commitTransaction();
 
         for (JsonObject json: result) {
             realm.beginTransaction();
             PostInfomation post = new PostInfomation();
-            Log.d(TAG, "syncWithRealm: id = "+ json.getInt("postId"));
             post.setPostId(json.getInt("postId"));
             post.setPostProfileID(json.getString("posterProfileID"));
             post.setCollectorID(json.getString("collectorID"));
@@ -69,13 +71,12 @@ public class SyncRealm {
             post.setLat(json.getDouble("lat"));
             post.setLnt(json.getDouble("lnt"));
             post.setSize(json.getInt("size"));
-            post.setComment("comment");
+            post.setComment(json.getString("comment"));
             try {
                 convertDate = simple.parse(json.getString("timeStamp"));
             } catch (ParseException e) {
-                Log.d(TAG, "syncWithRealm: " + e.getLocalizedMessage());
+                Log.e(TAG, "syncWithRealm: " + e.getLocalizedMessage());
             }
-            Log.d(TAG, "execute: "+convertDate);
             post.setTimestamp(convertDate);
             realm.copyToRealmOrUpdate(post);
             realm.commitTransaction();
@@ -84,6 +85,6 @@ public class SyncRealm {
 
         results = realm.where(PostInfomation.class).findAll();
 
-        Log.d(TAG, "syncWithRealm: Realm size = "+results.size());
+        realm.close();
     }
 }

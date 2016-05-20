@@ -2,6 +2,7 @@ package com.macbear.refundlyalpha;
 
 
 import android.content.Context;
+import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
@@ -19,6 +20,7 @@ import android.widget.SeekBar;
 import com.baasbox.android.BaasDocument;
 import com.baasbox.android.BaasHandler;
 import com.baasbox.android.BaasResult;
+import com.facebook.Profile;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,11 +28,15 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.macbear.refundlyalpha.Realm.PostInfomation;
+import com.macbear.refundlyalpha.Realm.ProfilInformation;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class PostFragment extends Fragment implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, OnMapReadyCallback,
         GoogleMap.OnMapClickListener{
@@ -42,6 +48,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     GoogleMap map;
     MarkerOptions mMaker;
     Geocoder mGeocoder;
+    String profilUsername, profilAddressRoad, profilAddressPostalCode;
 
     MapFragment mapFragment = new MapFragment();
 
@@ -61,7 +68,6 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         mMaker = new MarkerOptions();
         mGeocoder = new Geocoder(this.getContext(), Locale.getDefault());
 
-
         // Post refund button
         post = (Button) root.findViewById(R.id.postButton);
         post.setOnClickListener(this);
@@ -80,6 +86,18 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         // initiate size to 0
         size = 0;
 
+        if(Profile.getCurrentProfile()!=null){
+            Realm realm = Realm.getDefaultInstance();
+            RealmResults<ProfilInformation> profiler = realm.where(ProfilInformation.class).equalTo("profileID", Profile.getCurrentProfile().getId()).findAll();
+            if(profiler.size()!=0){
+                ProfilInformation temp = profiler.get(0);
+                profilUsername = temp.getUsername();
+            }
+            else {
+                profilUsername = Profile.getCurrentProfile().getFirstName() + " " + Profile.getCurrentProfile().getLastName();
+            }
+        }
+
         return root;
     }
 
@@ -92,23 +110,21 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         try {
             nextId1 = (realm.where(PostInfomation.class).max("postId").intValue() + 1);
         }catch (NullPointerException e){
-            Log.d("PostFragment", "onClick: Error when setting nextid: "+e.getLocalizedMessage());
             nextId1 = 0;
         }
         nextId = nextId1;
-        Log.d("PostFragment", "onClick: nextid = "+nextId);
         realm.executeTransactionAsync(new Realm.Transaction(){
             @Override
             public void execute(Realm realm) {
 
                 PostInfomation post = new PostInfomation();
                 post.setPostId(nextId);
-                post.setAddress(address.getText().toString());
-                post.setPostNumber(postalCode.getText().toString());
+                post.setAddress(profilAddressRoad);
+                post.setPostNumber(profilAddressPostalCode);
                 post.setLat(mMaker.getPosition().latitude);
                 post.setLnt(mMaker.getPosition().longitude);
                 post.setCollectorID("");
-                post.setPostProfileID("KimPossible321");
+                post.setPostProfileID(profilUsername);
                 post.setComment(commentField.getText().toString());
                 post.setSize(size);
                 post.setTimestamp(timeStamp);
@@ -117,10 +133,10 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         });
 
         BaasDocument doc = new BaasDocument("PostInformation");
-        doc.put("posterProfileID","KimPossible123")
+        doc.put("posterProfileID",profilUsername)
                 .put("postId", nextId)
-                .put("address",address.getText().toString())
-                .put("postalCode",postalCode.getText().toString())
+                .put("address",profilAddressRoad)
+                .put("postalCode",profilAddressPostalCode)
                 .put("lat", mMaker.getPosition().latitude)
                 .put("lnt", mMaker.getPosition().longitude)
                 .put("collectorID","")
@@ -143,7 +159,6 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         getFragmentManager().beginTransaction()
                 .replace(R.id.frameholder, new MapFragment())
                 .commit();
-
     }
 
     @Override
@@ -175,14 +190,40 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         mMaker.position(myCoords).title("Comment: "+commentField.getText().toString());
         map.addMarker(mMaker);
 
+        List<Address> addresses;
+        try {
+            addresses = mGeocoder.getFromLocation(myCoords.latitude, myCoords.longitude, 1);
+            profilAddressRoad = addresses.get(0).getAddressLine(0);
+            profilAddressPostalCode = addresses.get(0).getPostalCode();
+            address.setText(profilAddressRoad);
+            postalCode.setText(profilAddressPostalCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         float zoomLevel = 16;
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(myCoords, zoomLevel));
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
+        List<Address> addresses;
+        try {
+            addresses = mGeocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            profilAddressRoad = addresses.get(0).getAddressLine(0);
+            profilAddressPostalCode = addresses.get(0).getPostalCode();
+            address.setText(profilAddressRoad);
+            postalCode.setText(profilAddressPostalCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         map.clear();
         map.addMarker(mMaker.position(latLng).title("Comment: "+commentField.getText().toString()));
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
 }

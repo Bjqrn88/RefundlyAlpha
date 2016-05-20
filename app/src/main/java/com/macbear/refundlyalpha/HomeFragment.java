@@ -3,7 +3,6 @@ package com.macbear.refundlyalpha;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,21 +64,20 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    public List<String> getCurrentPosts(){
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
 
+    public List<String> getCurrentPosts(){
         SimpleDateFormat simple = new SimpleDateFormat("E MMM d HH:mm:ss");
         results = realm.where(PostInfomation.class).equalTo("collectorID","").findAll();
 
-        Log.d("Result size from Realm",""+results.size());
-
         List<String> list = new ArrayList<String>();
-
-
-
 
         for (PostInfomation post:results) {
             String date = simple.format(post.getTimestamp());
-            Log.d(TAG, "getCurrentPosts: "+post);
             list.add("Size: "+post.getSize()+", "+date);
         }
 

@@ -76,6 +76,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        realm.close();
+    }
 
     public void setCoords(LatLng coords){
         myCoords = coords;
