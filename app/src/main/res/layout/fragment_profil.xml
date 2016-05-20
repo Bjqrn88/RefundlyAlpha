@@ -29,7 +29,7 @@
         android:ems="10"
         android:id="@+id/profilAddressPostalcode"
         android:hint="Enter Post Code"
-        android:layout_above="@+id/profilAddressCity"
+        android:layout_above="@+id/profilPhoneNumber"
         android:layout_alignEnd="@+id/profilSaveButton" />
 
     <EditText
@@ -37,10 +37,10 @@
         android:layout_height="wrap_content"
         android:inputType="textPostalAddress"
         android:ems="10"
-        android:id="@+id/profilAddressCity"
+        android:id="@+id/profilPhoneNumber"
         android:hint="Enter Phone number"
         android:layout_marginBottom="24dp"
-        android:layout_above="@+id/checkBox"
+        android:layout_above="@+id/profilCheckBox"
         android:layout_centerHorizontal="true" />
 
     <Button
@@ -58,7 +58,7 @@
         android:text="Save"
         android:id="@+id/profilSaveButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/profilAddressCity" />
+        android:layout_alignEnd="@+id/profilPhoneNumber" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Collector"
-        android:id="@+id/checkBox"
+        android:id="@+id/profilCheckBox"
         android:checked="false"
         android:layout_above="@+id/profilCancelButton"
         android:layout_toEndOf="@+id/profilUsernameText" />

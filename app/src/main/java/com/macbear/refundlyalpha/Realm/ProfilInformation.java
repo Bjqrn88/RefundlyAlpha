@@ -2,11 +2,15 @@ package com.macbear.refundlyalpha.Realm;
 
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Required;
 
 /**
  * Created by Eier on 21.04.2016.
  */
 public class ProfilInformation extends RealmObject {
+    @PrimaryKey
+    @Required
     private String profileID;
     private String username;
     private String postNumber;
