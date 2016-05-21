@@ -48,6 +48,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     GoogleMap map;
     MarkerOptions mMaker;
     Geocoder mGeocoder;
+    SyncRealm sync;
     String profilUsername, profilAddressRoad, profilAddressPostalCode;
 
     MapFragment mapFragment = new MapFragment();
@@ -57,6 +58,8 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_post, container, false);
+
+        sync = new SyncRealm();
 
         realm = Realm.getDefaultInstance();
 
@@ -85,6 +88,8 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
         // initiate size to 0
         size = 0;
+
+        sync.sync();
 
         if(Profile.getCurrentProfile()!=null){
             Realm realm = Realm.getDefaultInstance();

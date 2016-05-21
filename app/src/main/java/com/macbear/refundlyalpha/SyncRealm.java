@@ -41,7 +41,6 @@ public class SyncRealm {
                 if (res.isSuccess()){
                     try {
                         result = res.get();
-                        Log.d(TAG, "handle: Success");
                         syncWithRealm();
                     } catch (BaasException e) {
                         e.printStackTrace();
