@@ -82,11 +82,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/profilPict"
-        android:src="@drawable/refundlylogo"
+        android:src="@mipmap/ic_launcher"
         android:scaleType="fitCenter"
         android:layout_above="@+id/profilUsernameText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="44dp" />
+        android:layout_marginBottom="44dp"
+        android:layout_alignLeft="@+id/profilUsernameText"
+        android:layout_alignStart="@+id/profilUsernameText"
+        android:layout_alignRight="@+id/profilUserNameField"
+        android:layout_alignEnd="@+id/profilUserNameField"
+        android:layout_alignParentTop="true" />
 
     <CheckBox
         android:layout_width="wrap_content"
