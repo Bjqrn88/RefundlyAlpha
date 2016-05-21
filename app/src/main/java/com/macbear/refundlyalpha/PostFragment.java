@@ -7,6 +7,7 @@ import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -89,7 +90,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         // initiate size to 0
         size = 0;
 
-        sync.sync();
+        callSync();
 
         if(Profile.getCurrentProfile()!=null){
             Realm realm = Realm.getDefaultInstance();
@@ -230,5 +231,15 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     public void onStop() {
         super.onStop();
         realm.close();
+    }
+
+    private void callSync(){
+        new AsyncTask(){
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                sync.sync();
+                return null;
+            }
+        }.execute();
     }
 }
