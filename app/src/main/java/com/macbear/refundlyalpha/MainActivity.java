@@ -1,5 +1,6 @@
 package com.macbear.refundlyalpha;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.baasbox.android.BaasBox;
 import com.baasbox.android.BaasHandler;
@@ -167,10 +169,17 @@ public class MainActivity extends AppCompatActivity
                         .replace(R.id.frameholder, new HomeFragment())
                         .commit();
                 break;
-            case R.id.nav_collect:
+            case R.id.nav_collect:/*
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new CollectFragment())
-                        .commit();
+                        .commit();*/
+                Context context = getApplicationContext();
+                CharSequence text = "Under Udvikling";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                break;
             case R.id.nav_map:
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new MapFragment())

@@ -185,7 +185,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
 
         Location location = locationManager.getLastKnownLocation(locationManager
                 .getBestProvider(criteria, false));
-        LatLng myCoords = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng myCoords = new LatLng(55.6680474,12.599181);
 
         mMaker.position(myCoords).title("Comment: "+commentField.getText().toString());
         map.addMarker(mMaker);
