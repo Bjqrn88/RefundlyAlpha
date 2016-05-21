@@ -163,7 +163,7 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         mapFragment.setCoords(new LatLng(mMaker.getPosition().latitude, mMaker.getPosition().longitude));
 
         getFragmentManager().beginTransaction()
-                .replace(R.id.frameholder, new MapFragment())
+                .replace(R.id.frameholder, mapFragment)
                 .commit();
     }
 
