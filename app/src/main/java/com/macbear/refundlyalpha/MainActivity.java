@@ -1,7 +1,9 @@
 package com.macbear.refundlyalpha;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -105,7 +107,10 @@ public class MainActivity extends AppCompatActivity
             }
         };
         if(AccessToken.getCurrentAccessToken()!=null){
-            onNavigationItemSelected(navigationView.getMenu().getItem(1));
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(this);
+            int i = sharedPreferences.getInt("last",R.id.nav_post);
+            onNavigationItemSelected(i);
         }
         else{
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -157,14 +162,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
         switch (item.getItemId()) {
             case R.id.nav_post:
+
+                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new PostFragment())
                         .commit();
                 break;
             case R.id.nav_home:
+                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new HomeFragment())
                         .commit();
@@ -181,6 +192,7 @@ public class MainActivity extends AppCompatActivity
                 toast.show();
                 break;
             case R.id.nav_map:
+                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new MapFragment())
                         .commit();
@@ -188,6 +200,65 @@ public class MainActivity extends AppCompatActivity
             /*case R.id.nav_manage:
                 break;*/
             case R.id.nav_profile:
+                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new ProfilFragment())
+                        .commit();
+                break;
+            /*case R.id.nav_login:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new LoginFragment())
+                        .commit();*/
+            case R.id.nav_send:
+                LoginManager.getInstance().logOut();
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    public boolean onNavigationItemSelected(int id ) {
+        // Handle navigation view item clicks here.
+
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        switch (id) {
+            case R.id.nav_post:
+
+                sharedPreferences.edit().putInt("last", id).commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new PostFragment())
+                        .commit();
+                break;
+            case R.id.nav_home:
+                sharedPreferences.edit().putInt("last", id).commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new HomeFragment())
+                        .commit();
+                break;
+            case R.id.nav_collect:/*
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new CollectFragment())
+                        .commit();*/
+                Context context = getApplicationContext();
+                CharSequence text = "Under Udvikling";
+                int duration = Toast.LENGTH_SHORT;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+                break;
+            case R.id.nav_map:
+                sharedPreferences.edit().putInt("last", id).commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frameholder, new MapFragment())
+                        .commit();
+                break;
+            /*case R.id.nav_manage:
+                break;*/
+            case R.id.nav_profile:
+                sharedPreferences.edit().putInt("last", id).commit();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new ProfilFragment())
                         .commit();

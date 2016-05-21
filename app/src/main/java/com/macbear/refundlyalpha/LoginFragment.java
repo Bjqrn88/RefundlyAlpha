@@ -67,11 +67,6 @@ public class LoginFragment extends Fragment {
                             profile = profile2;
                             profile.setCurrentProfile((profile2));
                             textView.setText("Hej " + profile.getFirstName());
-                            SharedPreferences sharedPreferences =
-                                    PreferenceManager.getDefaultSharedPreferences(getActivity());
-                            sharedPreferences.edit().putString("firstName", profile.getFirstName());
-                            sharedPreferences.edit().putString("lastName", profile.getLastName());
-                            sharedPreferences.edit().putString("id", profile.getId());
                             addProfile();
                             mProfileTracker.stopTracking();
                             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -84,11 +79,6 @@ public class LoginFragment extends Fragment {
                 } else {
                     profile = Profile.getCurrentProfile();
                     textView.setText("Hej " + profile.getFirstName());
-                    SharedPreferences sharedPreferences =
-                            PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    sharedPreferences.edit().putString("firstName", profile.getFirstName());
-                    sharedPreferences.edit().putString("lastName", profile.getLastName());
-                    sharedPreferences.edit().putString("id", profile.getId());
                     addProfile();
                     FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                     fragmentManager.beginTransaction()
