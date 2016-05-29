@@ -90,7 +90,13 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
         // initiate size to 0
         size = 0;
 
-        callSync();
+        new AsyncTask(){
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                sync.sync();
+                return null;
+            }
+        }.execute();
 
         if(Profile.getCurrentProfile()!=null){
             Realm realm = Realm.getDefaultInstance();
@@ -231,15 +237,5 @@ public class PostFragment extends Fragment implements View.OnClickListener, Seek
     public void onStop() {
         super.onStop();
         realm.close();
-    }
-
-    private void callSync(){
-        new AsyncTask(){
-            @Override
-            protected Object doInBackground(Object[] objects) {
-                sync.sync();
-                return null;
-            }
-        }.execute();
     }
 }

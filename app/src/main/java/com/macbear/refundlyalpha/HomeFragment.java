@@ -1,6 +1,7 @@
 package com.macbear.refundlyalpha;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -61,7 +62,13 @@ public class HomeFragment extends Fragment {
         });
 
         sync = new SyncRealm();
-        sync.sync();
+        new AsyncTask(){
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                sync.sync();
+                return null;
+            }
+        }.execute();
         return root;
     }
 

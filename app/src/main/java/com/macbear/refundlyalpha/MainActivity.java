@@ -2,6 +2,7 @@ package com.macbear.refundlyalpha;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -83,9 +85,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         sync = new SyncRealm();
-        sync.sync();
-
-
+        new AsyncTask(){
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                sync.sync();
+                return null;
+            }
+        }.execute();
 
         AccessTokenTracker accessTokenTracker = new AccessTokenTracker() {
             @Override
@@ -169,13 +175,13 @@ public class MainActivity extends AppCompatActivity
         switch (item.getItemId()) {
             case R.id.nav_post:
 
-                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
+                sharedPreferences.edit().putInt("last", item.getItemId()).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new PostFragment())
                         .commit();
                 break;
             case R.id.nav_home:
-                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
+                sharedPreferences.edit().putInt("last", item.getItemId()).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new HomeFragment())
                         .commit();
@@ -192,7 +198,7 @@ public class MainActivity extends AppCompatActivity
                 toast.show();
                 break;
             case R.id.nav_map:
-                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
+                sharedPreferences.edit().putInt("last", item.getItemId()).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new MapFragment())
                         .commit();
@@ -200,7 +206,7 @@ public class MainActivity extends AppCompatActivity
             /*case R.id.nav_manage:
                 break;*/
             case R.id.nav_profile:
-                sharedPreferences.edit().putInt("last", item.getItemId()).commit();
+                sharedPreferences.edit().putInt("last", item.getItemId()).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new ProfilFragment())
                         .commit();
@@ -218,6 +224,7 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
     public boolean onNavigationItemSelected(int id ) {
         // Handle navigation view item clicks here.
 
@@ -227,13 +234,13 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.nav_post:
 
-                sharedPreferences.edit().putInt("last", id).commit();
+                sharedPreferences.edit().putInt("last", id).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new PostFragment())
                         .commit();
                 break;
             case R.id.nav_home:
-                sharedPreferences.edit().putInt("last", id).commit();
+                sharedPreferences.edit().putInt("last", id).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new HomeFragment())
                         .commit();
@@ -250,7 +257,7 @@ public class MainActivity extends AppCompatActivity
                 toast.show();
                 break;
             case R.id.nav_map:
-                sharedPreferences.edit().putInt("last", id).commit();
+                sharedPreferences.edit().putInt("last", id).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new MapFragment())
                         .commit();
@@ -258,7 +265,7 @@ public class MainActivity extends AppCompatActivity
             /*case R.id.nav_manage:
                 break;*/
             case R.id.nav_profile:
-                sharedPreferences.edit().putInt("last", id).commit();
+                sharedPreferences.edit().putInt("last", id).apply();
                 fragmentManager.beginTransaction()
                         .replace(R.id.frameholder, new ProfilFragment())
                         .commit();

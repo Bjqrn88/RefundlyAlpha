@@ -35,6 +35,7 @@ public class SyncRealm {
     }
 
     public void sync(){
+
         query.query(new BaasHandler<List<JsonObject>>(){
             @Override
             public void handle(BaasResult<List<JsonObject>> res){
